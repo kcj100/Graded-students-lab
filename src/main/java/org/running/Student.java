@@ -77,7 +77,7 @@ public class Student {
 
     public String toString() {
         if (this.firstName == null && this.lastName == null) {
-            return "";
+            return null;
         }
         StringBuilder output = new StringBuilder();
         output.append("Student Name: " + this.firstName + " " + this.lastName + "\n> ");
