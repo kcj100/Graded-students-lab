@@ -45,6 +45,9 @@ public class Main {
         HashMap<String, ArrayList<Student>> gradeBook = classroom.getGradeBook();
         classroom.printGradeBook(gradeBook);
         System.out.println(getExamScoresCountStudentTest.getNumberOfExamsTaken());
+        classroom.printStudentsByScore();
+        System.out.println();
+        classroom.printStudents();
     }
 
 }

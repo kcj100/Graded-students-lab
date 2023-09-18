@@ -6,7 +6,6 @@ import java.util.*;
 import static java.util.Arrays.*;
 import static java.util.Comparator.comparingDouble;
 import static java.util.Comparator.comparingInt;
-
 public class Classroom {
     Student[] students;
 
@@ -29,9 +28,20 @@ public class Classroom {
         this.students = students;
     }
 
+    // as according to instructions, I did not make getStudents() of return
+    // type void and left it to return Student[], hence the default toString
+    // of Array will print
     public Student[] getStudents() {
         System.out.println("CLASSROOM:");
         return students;
+    }
+
+    // extra method meant to print out students in desired format
+    public void printStudents() {
+        Student[] studentsArray = getStudents();
+        for (Student student : studentsArray) {
+            System.out.println(student);
+        }
     }
 
     public double getAverageExamScore() {
@@ -72,7 +82,11 @@ public class Classroom {
         students = newStudents;
     }
 
+    // as according to instructions, I did not make getStudentsByScore() of return
+    // type void and left it to return Student[], hence the default toString
+    // of Array will print
     public Student[] getStudentsByScore() {
+        System.out.println("CLASSROOM SORTED BY AVERAGE SCORE:");
         // create ArrayList for easier manipulation of students array
         ArrayList<Student> studentsCopy = new ArrayList<>(asList(students));
         // remove all nulls to verify no nulls are processed during the sort
@@ -83,6 +97,14 @@ public class Classroom {
         studentsCopy.sort(SCORECOMPARATOR);
         newStudents = studentsCopy.toArray(new Student[30]);
         return newStudents;
+    }
+
+    // extra method meant to print out students in desired format
+    public void printStudentsByScore() {
+        Student[] studentsArray = getStudentsByScore();
+        for (Student student : studentsArray) {
+            System.out.println(student);
+        }
     }
 
     // use custom Comparator of Student type while using lambadas to sort
