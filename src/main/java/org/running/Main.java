@@ -11,6 +11,7 @@ public class Main {
         String[] firstNames = {"Josh", "Emma", "Charlie", "Sophia", "Liam", "Olivia", "Aiden", "Ava", "Ethan", "Mia"};
         String[] lastNames = {"Smith", "Johnson", "Brown", "Davis", "Wilson", "Lee", "White", "Clark", "Lewis", "Hall"};
         Student removedStudentTest = new Student(null, null, new Double[0]);
+        Student getExamScoresCountStudentTest = new Student(null, null, new Double[0]);
         Classroom classroom = new Classroom();
         for (int i = 0; i < 10; i++) {
             String randomFirstName = firstNames[(int) (Math.random() * firstNames.length)];
@@ -25,6 +26,7 @@ public class Main {
             Student student = new Student(randomFirstName, randomLastName, randomExamScores);
             removedStudentTest.setFirstName(randomFirstName);
             removedStudentTest.setLastName(randomLastName);
+            getExamScoresCountStudentTest = new Student(randomFirstName, randomLastName, randomExamScores);
             classroom.addStudent(student);
 
         }
@@ -33,20 +35,16 @@ public class Main {
 
 
         System.out.println(Arrays.toString(output));
-        System.out.println("\n\n\n=================================");
+        System.out.println("\n\n\n=================================\n");
+        System.out.println("---REMOVEDSTUDENTTEST---");
         System.out.println(removedStudentTest.toString());
         System.out.println("=================================\n\n\n");
 
         output = classroom.getStudentsByScore();
         System.out.println(Arrays.toString(output));
         HashMap<String, ArrayList<Student>> gradeBook = classroom.getGradeBook();
-        for(Map.Entry<String, ArrayList<Student>> entry: gradeBook.entrySet()) {
-            StringBuilder grade = new StringBuilder(entry.getKey()).append(" -> ");
-            for (Student student : entry.getValue()) {
-                grade.append(student.getFirstName() + " " + student.getLastName() + ", ");
-            }
-            System.out.println(grade.toString().substring(0, grade.length() - 2));
-        }
+        classroom.printGradeBook(gradeBook);
+        System.out.println(getExamScoresCountStudentTest.getNumberOfExamsTaken());
     }
 
 }

@@ -11,6 +11,7 @@ public class Classroom {
     Student[] students;
 
     public Classroom() {
+        // default constructor initializes an array of 30 empty student spots
         students = new Student[30];
         for (int i = 0; i < students.length; i++) {
             students[i] = new Student(null,null, new Double[0]);
@@ -29,10 +30,12 @@ public class Classroom {
     }
 
     public Student[] getStudents() {
+        System.out.println("CLASSROOM:");
         return students;
     }
 
     public double getAverageExamScore() {
+        // use stream to get average
         double sum = stream(students)
                 .mapToDouble(Student::getAverageExamScore)
                 .sum();
@@ -40,75 +43,102 @@ public class Classroom {
     }
 
     public void addStudent(Student student) {
+        // create ArrayList for easier manipulation of students array
         ArrayList<Student> studentsCopy = new ArrayList<>(asList(students));
 
+        // verify student is not null
         if (student != null) {
             studentsCopy.add(student);
         }
-//        studentsCopy.removeIf(i -> i.getFirstName() == null && i.getLastName() == null);
 
+        // create new Array to convert manipulated ArrayList back into Array
         Student[] newStudents;
-        newStudents = studentsCopy.toArray(new Student[0]);
+        newStudents = studentsCopy.toArray(new Student[30]);
         students = newStudents;
     }
 
     public void removeStudent(String firstName, String lastName) {
+        // create ArrayList for easier manipulation of students array
         ArrayList<Student> studentsCopy = new ArrayList<>(asList(students));
+        // remove all nulls to verify no nulls are processed during the equals check
+        // for firstName and lastName
         studentsCopy.removeIf(i -> i.getFirstName() == null && i.getLastName() == null);
         studentsCopy.removeIf(i -> i.getFirstName().equals(firstName)
                 && i.getLastName().equals(lastName));
+
+        // create new Array to convert manipulated ArrayList back into Array
         Student[] newStudents;
         newStudents = studentsCopy.toArray(new Student[30]);
         students = newStudents;
     }
 
     public Student[] getStudentsByScore() {
+        // create ArrayList for easier manipulation of students array
         ArrayList<Student> studentsCopy = new ArrayList<>(asList(students));
-        studentsCopy.removeIf(student -> student == null || student.getFirstName() == null || student.getLastName() == null);        studentsCopy.sort(SCORECOMPARATOR);
+        // remove all nulls to verify no nulls are processed during the sort
+        studentsCopy.removeIf(student -> student == null || student.getFirstName() == null || student.getLastName() == null);
         Student[] newStudents;
+        // use custom Comparator to sort by average exam score, then if equal
+        // sort lexicographically
         studentsCopy.sort(SCORECOMPARATOR);
         newStudents = studentsCopy.toArray(new Student[30]);
         return newStudents;
     }
 
+    // use custom Comparator of Student type while using lambadas to sort
+    // through a Collection, first by average exam score, then if equal
+    // sort lexicographically
     private static final Comparator<Student> SCORECOMPARATOR =
             comparingDouble((Student s) -> Math.round(s.getAverageExamScore())).reversed()
                     .thenComparing(s-> (String) s.getFirstName())
                     .thenComparing(s -> (String) s.getLastName());
 
-    public int compareTo(Student student1, Student student2) {
-        return SCORECOMPARATOR.compare(student1, student2);
-    }
 
     public HashMap<String, ArrayList<Student>> getGradeBook() {
+        // create ArrayList for easier manipulation of students array
         ArrayList<Student> studentsCopy = new ArrayList<>(asList(students));
+        // remove all nulls to verify no nulls are processed during the sort
         studentsCopy.removeIf(student -> student == null || student.getFirstName() == null || student.getLastName() == null);
+
+        // start off with a Student from the first index of ArrayList
         Student studentWithBestScore = studentsCopy.get(0);
+
+        // update studentWithBestScore if next student in for loop has a
+        // greater average score
         for (Student s : studentsCopy) {
             if (s.getAverageExamScore() > studentWithBestScore.getAverageExamScore()) {
                 studentWithBestScore = s;
             }
         }
+
+        // create double variable of the highest student score received after
+        // the for loop
         double highestAverageScore = studentWithBestScore.getAverageExamScore();
 
+        // count all students below the highestAverageScore for percentile formula
         long valuesBelow = studentsCopy.stream()
                 .filter((i -> i.getAverageExamScore() < highestAverageScore))
                 .count();
         Map<Student, Double> percentiles = new HashMap<>();
 
+        // calculate all students' average score's percentile and
+        // insert into percentile HashMap
         for (Student s : studentsCopy) {
             double percentile = calculatePercentile(s.getAverageExamScore(), highestAverageScore, valuesBelow, studentsCopy.size());
             percentiles.put(s, percentile);
         }
-        HashMap<String, ArrayList<Student>> gradeBook = mapStudentsByGrade(percentiles);
-        return gradeBook;
+        // return students by grade depending on percentile
+        return mapStudentsByGrade(percentiles);
     }
 
     private double calculatePercentile(double studentScore, double highestScore, long valuesBelow, int totalStudent) {
+        // percentile formula
         return ((valuesBelow + (studentScore == highestScore ? 0.5 : 0)) / totalStudent * 100.0);
     }
 
     private HashMap<String, ArrayList<Student>> mapStudentsByGrade(Map<Student, Double> percentiles) {
+        // create new HashMap with grades serving as key and ArrayList
+        // as the value to store multiple students in each grade
         HashMap<String, ArrayList<Student>> gradeBook = new HashMap<>();
         gradeBook.put("A", new ArrayList<Student>());
         gradeBook.put("B", new ArrayList<Student>());
@@ -116,6 +146,7 @@ public class Classroom {
         gradeBook.put("D", new ArrayList<Student>());
         gradeBook.put("F", new ArrayList<Student>());
 
+        // percentile limits
         double percentileA = 90.0;
         double percentileB = 70.0;
         double percentileC = 50.0;
@@ -139,6 +170,17 @@ public class Classroom {
             gradeBook.computeIfAbsent(grade, k -> new ArrayList<>()).add(student);
         }
         return gradeBook;
+    }
+
+    // extra test method to test logic of getGradeBook()
+    public void printGradeBook(HashMap<String, ArrayList<Student>> gradeBook) {
+        for(Map.Entry<String, ArrayList<Student>> entry: gradeBook.entrySet()) {
+            StringBuilder grade = new StringBuilder(entry.getKey()).append(" -> ");
+            for (Student student : entry.getValue()) {
+                grade.append(student.getFirstName() + " " + student.getLastName() + ", ");
+            }
+            System.out.println(grade.toString().substring(0, grade.length() - 2));
+        }
     }
 
 

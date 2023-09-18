@@ -46,7 +46,7 @@ public class Student {
     }
 
     public int getNumberOfExamsTaken() {
-        return -1;
+        return examScores.size();
     }
 
     public void addExamScore(double examScore) {
@@ -65,6 +65,7 @@ public class Student {
                 .orElse(0.0);
     }
 
+    // exception method for checking if arguments are invalid
     private void checkSetExamScoreMethod(int examNumber, double newScore) {
         if (examNumber <= 0) {
             throw new IllegalArgumentException("examNumber is equal to or less than 0");
@@ -82,7 +83,7 @@ public class Student {
         StringBuilder output = new StringBuilder();
         output.append("Student Name: " + this.firstName + " " + this.lastName + "\n> ");
         output.append("Average Score: " + Math.round(getAverageExamScore()) + "\n> ");
-        output.append(getExamScores());
+        output.append(getExamScores() + "\n");
         return output.toString();
     }
 
