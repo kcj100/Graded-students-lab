@@ -15,7 +15,7 @@
 ### Chapter 6
 - Single & and | force the JVM to always check both sides of the expression, unlike double & (&&)
 and | (||). (Page 151)
-- You can easily find out what's in the Java library by flipping through a reference book.
+- You can easily find out what's in the Java library by flipping through a reference book. 
 - We can also use polymorphism when we create parameters and put arguments for methods.
 
 ### Chapter 7
@@ -26,11 +26,11 @@ between the superclass and subclass violate either of the above two rules" (Page
 ### Chapter 8
 - "If you declare an abstract <em>method</em>, you MUST mark the <em>class</em> abstract as well.
 You can't have an abstract method in a non-abstract class." (Page 203)
-- Every class, regardless of whether it was created by you or already built in the Java API, extends the object class. 
-All classes are subclasses of the object class.
-- If a specific object turns into a reference of Object class, we can cast it back to the original Class.
+- Every class, regardless of whether it was created by you or already built in the Java API, extends the object class.  (Page 208)
+- All classes are subclasses of the object class. (Page 208)
+- If a specific object turns into a reference of Object class, we can cast it back to the original Class. (Page 216)
 
 ### Chapter 9 
-- It is advisable to include a parameterless constructor to simplify object creation, providing default values if needed.
-- Overloaded constructors are when a class has multiple constructors with different argument lists.
-- Overloaded constructors must have distinct argument lists, considering the order and types of arguments.
+- It is advisable to include a parameterless constructor to simplify object creation, providing default values if needed. (Page 241-242)
+- Overloaded constructors are when a class has multiple constructors with different argument lists. (Page 245)
+- Overloaded constructors must have distinct argument lists, considering the order and types of arguments. (Page 245-250)
