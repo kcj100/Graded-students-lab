@@ -13,7 +13,7 @@ public class Main {
         Student removedStudentTest = new Student(null, null, new Double[0]);
         Student getExamScoresCountStudentTest = new Student(null, null, new Double[0]);
         Classroom classroom = new Classroom();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 30; i++) {
             String randomFirstName = firstNames[(int) (Math.random() * firstNames.length)];
             String randomLastName = lastNames[(int) (Math.random() * lastNames.length)];
 

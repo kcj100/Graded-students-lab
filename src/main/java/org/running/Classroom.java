@@ -55,7 +55,10 @@ public class Classroom {
     public void addStudent(Student student) {
         // create ArrayList for easier manipulation of students array
         ArrayList<Student> studentsCopy = new ArrayList<>(asList(students));
-
+        studentsCopy.removeIf(s -> s == null || s.getFirstName() == null && s.getLastName() == null);
+        if (studentsCopy.size() + 1 > students.length) {
+            throw new IllegalArgumentException("Classroom is full");
+        }
         // verify student is not null
         if (student != null) {
             studentsCopy.add(student);
@@ -63,7 +66,7 @@ public class Classroom {
 
         // create new Array to convert manipulated ArrayList back into Array
         Student[] newStudents;
-        newStudents = studentsCopy.toArray(new Student[30]);
+        newStudents = studentsCopy.toArray(new Student[students.length]);
         students = newStudents;
     }
 
@@ -72,13 +75,13 @@ public class Classroom {
         ArrayList<Student> studentsCopy = new ArrayList<>(asList(students));
         // remove all nulls to verify no nulls are processed during the equals check
         // for firstName and lastName
-        studentsCopy.removeIf(i -> i.getFirstName() == null && i.getLastName() == null);
+        studentsCopy.removeIf(s -> s == null || s.getFirstName() == null || s.getLastName() == null);
         studentsCopy.removeIf(i -> i.getFirstName().equals(firstName)
                 && i.getLastName().equals(lastName));
 
         // create new Array to convert manipulated ArrayList back into Array
         Student[] newStudents;
-        newStudents = studentsCopy.toArray(new Student[30]);
+        newStudents = studentsCopy.toArray(new Student[students.length]);
         students = newStudents;
     }
 
@@ -95,7 +98,7 @@ public class Classroom {
         // use custom Comparator to sort by average exam score, then if equal
         // sort lexicographically
         studentsCopy.sort(SCORECOMPARATOR);
-        newStudents = studentsCopy.toArray(new Student[30]);
+        newStudents = studentsCopy.toArray(new Student[students.length]);
         return newStudents;
     }
 
@@ -196,6 +199,7 @@ public class Classroom {
 
     // extra test method to test logic of getGradeBook()
     public void printGradeBook(HashMap<String, ArrayList<Student>> gradeBook) {
+        System.out.println("GRADES (CURVED): ");
         for(Map.Entry<String, ArrayList<Student>> entry: gradeBook.entrySet()) {
             StringBuilder grade = new StringBuilder(entry.getKey()).append(" -> ");
             for (Student student : entry.getValue()) {
